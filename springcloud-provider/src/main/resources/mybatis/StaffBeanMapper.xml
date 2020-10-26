@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fgf.dao.StaffBeanMapper" >
+  <resultMap id="BaseResultMap" type="com.fgf.entity.StaffBean" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="branch_id" property="branchId" jdbcType="INTEGER" />
+    <result column="creatime" property="creatime" jdbcType="VARCHAR" />
+    <result column="quarters" property="quarters" jdbcType="VARCHAR" />
+    <result column="buty" property="buty" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, staff_name, branch_id, creatime, quarters, buty
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tr_staff
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tr_staff
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fgf.entity.StaffBean" >
+    insert into tr_staff ( staff_name, branch_id,
+      creatime, quarters, buty
+      )
+    values (#{staffName,jdbcType=VARCHAR}, #{branchId,jdbcType=INTEGER},
+      #{creatime,jdbcType=VARCHAR}, #{quarters,jdbcType=VARCHAR}, #{buty,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fgf.entity.StaffBean" >
+    insert into tr_staff
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="staffName != null" >
+        staff_name,
+      </if>
+      <if test="branchId != null" >
+        branch_id,
+      </if>
+      <if test="creatime != null" >
+        creatime,
+      </if>
+      <if test="quarters != null" >
+        quarters,
+      </if>
+      <if test="buty != null" >
+        buty,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="staffName != null" >
+        #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="branchId != null" >
+        #{branchId,jdbcType=INTEGER},
+      </if>
+      <if test="creatime != null" >
+        #{creatime,jdbcType=VARCHAR},
+      </if>
+      <if test="quarters != null" >
+        #{quarters,jdbcType=VARCHAR},
+      </if>
+      <if test="buty != null" >
+        #{buty,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fgf.entity.StaffBean" >
+    update tr_staff
+    <set >
+      <if test="staffName != null" >
+        staff_name = #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="branchId != null" >
+        branch_id = #{branchId,jdbcType=INTEGER},
+      </if>
+      <if test="creatime != null" >
+        creatime = #{creatime,jdbcType=VARCHAR},
+      </if>
+      <if test="quarters != null" >
+        quarters = #{quarters,jdbcType=VARCHAR},
+      </if>
+      <if test="buty != null" >
+        buty = #{buty,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fgf.entity.StaffBean" >
+    update tr_staff
+    set staff_name = #{staffName,jdbcType=VARCHAR},
+      branch_id = #{branchId,jdbcType=INTEGER},
+      creatime = #{creatime,jdbcType=VARCHAR},
+      quarters = #{quarters,jdbcType=VARCHAR},
+      buty = #{buty,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selStaffBean" resultType="StaffBean">
+    select a.*,branch_name branchName from tr_staff a left join tr_branch b on a.branch_id=b.branch_id
+  </select>
+  <delete id="deleteStaff" parameterType="string">
+    delete from tr_staff where id in
+    <foreach collection="array" open="(" close=")" item="id" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+</mapper>
